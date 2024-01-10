@@ -1,0 +1,101 @@
+.container {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+h1 {
+    color: #077561;
+    
+    font-weight: bold;
+}
+
+h2 {
+    color: #636363;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+
+.colors:hover {
+    cursor: grab;
+}
+
+.over {
+        border: 3px dotted #666;
+        background-color: #bbb !important;
+      }
+
+.marble {
+        height: 40px;
+        width: 40px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        font-size: 30px;
+        color: white;
+      }
+
+.pin {
+        height: 15px;
+        width: 20px;
+        background-color: #bbb;
+        border-radius: 20%;
+        display: inline-block;
+        font-size: 30px;
+    }
+
+/* .row_result {
+    padding-top: 15px !important;
+} */
+
+.red {
+    background-color: #ff2f2f;
+    color: #ff2f2f;
+}
+.orange {
+    background-color: #ffbb00;
+    color: #ffbb00;
+}
+
+.yellow {
+    background-color: #fff535;
+    color: #fff535;
+    /* color: #313131; */
+}
+
+.green {
+    background-color: #1aff00;
+    color: #1aff00;
+}
+
+.blue {
+    background-color: #00c8ff;
+    color: #00c8ff;
+}
+
+.white {
+    background-color: white;
+    color: white;
+    border-color: #bbb;
+    border-style: solid;
+    /* color: #313131; */
+}
+
+.black {
+    background-color: #313131;
+    color: #313131;
+}
+
+.brown {
+    background-color: #884200;
+    color: #884200;
+}
+
+.btn-primary {
+    background-color: #06ac8e;
+    border-color: #077561;;
+}
+
+.btn-primary:hover {
+    background-color: #077561;
+    border-color:  #06ac8e;
+}
