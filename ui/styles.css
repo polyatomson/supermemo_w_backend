@@ -2,6 +2,12 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
+@media (min-width: 800px){
+    .container.game {
+        width: 60%;
+    }
+}
+
 h1 {
     color: #077561;
     
