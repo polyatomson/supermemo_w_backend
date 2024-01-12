@@ -1,10 +1,7 @@
 
-
-  
-  
   function handleDragStart(e) {
     e.dataTransfer.items.add(e.target.classList, "text_class");
-    console.log("moving from", this.id)
+    // console.log("moving from", this.id)
     e.dataTransfer.items.add(this.id, "text_id");
     
   }
@@ -32,11 +29,11 @@
     this.classList.remove('over');
     var new_class = e.dataTransfer.getData("text_class");
     var previous_id = e.dataTransfer.getData("text_id");
-    console.log("previous_id", previous_id)
+    // console.log("previous_id", previous_id)
     if (e.target.classList[0] == "marble") {
         if (previous_id !== '') {
             var previous_cell = document.getElementById(previous_id)
-            console.log("previous cell", previous_cell)
+            // console.log("previous cell", previous_cell)
             previous_cell.children[0].classList = e.target.classList
           }
         e.target.classList = new_class;
@@ -45,7 +42,7 @@
     else {
         if (previous_id !== '') {
             var previous_cell = document.getElementById(previous_id)
-            console.log("previous cell", previous_cell)
+            // console.log("previous cell", previous_cell)
             previous_cell.children[0].classList = e.target.children[0].classList
           }
         e.target.children[0].classList = new_class
@@ -54,7 +51,7 @@
   };
 
   let colors = document.querySelectorAll('.colors');
-    console.log(colors)
+    // console.log(colors)
     colors.forEach(function (color) {
         color.addEventListener('dragstart', handleDragStart);
         color.addEventListener('dragleave', handleDragLeave);
@@ -63,7 +60,7 @@
   });
 
   let positions = document.querySelectorAll('#blank td.positions');
-    console.log(positions)
+    // console.log(positions)
     positions.forEach(function (position) {
         position.addEventListener('dragstart', handleDragStart);
         position.addEventListener('dragover', handleDragOver);
@@ -78,9 +75,10 @@ function reset_row() {
   let positions_current = document.querySelectorAll('#blank td.positions');
   positions_current.forEach(function (position) {
     var pos_classes = position.children[0].classList
-    console.log('pos_classes', pos_classes)
+    // console.log('pos_classes', pos_classes)
     if (pos_classes.length > 1) {
       pos_classes.remove(pos_classes[1])
+      position.children[0].draggable = false
     }
   });
 }

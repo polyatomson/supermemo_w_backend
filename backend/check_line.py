@@ -1,4 +1,4 @@
-def check_line(user_line: list[str], comb: list[str]):
+def check_line(user_line: list[str], comb: list[str]) -> dict[str:int]:
     checked_colors = {}
     for i, c in enumerate(user_line):
         if c in comb:
@@ -10,4 +10,4 @@ def check_line(user_line: list[str], comb: list[str]):
                     checked_colors[c] = 'white'
     black = sum([1 for res in checked_colors.values() if res == 'black'])
     white = sum([1 for res in checked_colors.values() if res == 'white'])
-    return black, white
+    return {'black':black, 'white':white}

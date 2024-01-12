@@ -1,23 +1,61 @@
 function get_row() {
+    var table = document.getElementById("guesses")
     submitted_row = document.getElementById("blank")
     marbles = submitted_row.querySelectorAll('.marble')
+    
+    // collecting the picked color set
     var picked_colors = Array()
     marbles.forEach(marble => {
-        console.log(marble.classList[1])
+        // console.log(marble.classList[1])
         if (marble.classList[1] !== undefined) {
             picked_colors.push(marble.classList[1])
-        }});
-    if (picked_colors.length == 5) {
-        console.log('good to go')
-    }
-    else {
+        }
+        else {
+            return false
+        }
+    });
+    
+    // checking if all the 5 positions are filled
+    if (picked_colors.length != 5) {
         alert('All positions should be filled')
         return false
     }
-    
+
+    // assigning an incremented id to the filled row
+    var row_lengths = table.rows.length
+    var new_id = 'guess'+String(row_lengths)
+    submitted_row.id = String(new_id)
+
+    // adding the filled row records to the local storage
+    var previous_guesses_str = localStorage.getItem('guesses')
+    var previous_guesses = JSON.parse(previous_guesses_str)
+    previous_guesses[new_id] = picked_colors
+    localStorage.setItem('guesses', JSON.stringify(previous_guesses))
+
+    // sending the row to the api for evaluation and displaying results
+    // let input_colors = JSON.stringify(picked_colors)
+    var evaluate_info = {"input_line": picked_colors, "combination": JSON.parse(localStorage.getItem("combination"))}
+    fetch (API+'/check_line', {    
+    method: 'POST',
+    headers: {
+        "Content-Type": "application/json"
+      },
+    body: JSON.stringify(evaluate_info),
+    }).then(function (resp) {
+        return resp.json()
+    }).then(function (resp_json) {
+        // console.log(resp_json)
+        var allresults = JSON.parse(localStorage.getItem("results"))
+        allresults[new_id] = resp_json
+        localStorage.setItem("results", JSON.stringify(allresults))
+        return resp_json
+    }).then(function (resp_json){
+        display_row_results(new_id, resp_json)
+    });
+
+    // removing listeners from the filled row
     cells = submitted_row.querySelectorAll('td.positions')
     cells.forEach(cell => {
-        // console.log(marble.classList[1])
         cell.removeAttribute('id')
         cell.removeEventListener('dragstart', handleDragStart);
         cell.removeEventListener('drop', handleDrop)
@@ -26,15 +64,12 @@ function get_row() {
         cell.removeEventListener('dragend', handleDragEnd)
         cell.removeEventListener('dragleave', handleDragLeave)
         cell.children[0].draggable = false
-        // marble.draggable = false
         });
-    var table = document.getElementById("guesses")
-    var row_lengths = table.rows.length
-    var new_id = 'guess'+String(row_lengths)
-    submitted_row.id = new_id+''
+
+    // adding a new blank row at the bottom of the table
     var row = table.insertRow(-1)
     row.id = 'blank'
-    row.innerHTML = `<td class="positions" id='input1'>
+    row.innerHTML = `<td id='input1' class="positions">
     <span class="marble">1</span>
     </td>
     <td id='input2' class="positions">
@@ -61,20 +96,9 @@ function get_row() {
                         </div>
                     </td>`
     
-    var previous_guesses_str = localStorage.getItem('guesses')
-    console.log('previous_guesses', previous_guesses_str)
-    var previous_guesses = JSON.parse(previous_guesses_str)
-    console.log('previous_guesses', previous_guesses)
-    if (previous_guesses == null) {
-        previous_guesses = {}
-    }
-    console.log('previous_guesses', previous_guesses)
-    console.log('typeof_previous_guesses', typeof(previous_guesses))
-    // previous_guesses.push({key:new_id, value: picked_colors})
-    previous_guesses[new_id] = picked_colors
-    localStorage.setItem('guesses', JSON.stringify(previous_guesses))
+    // adding listeners to the newly added blank row
     let positions = document.querySelectorAll('#blank td.positions')
-    console.log(positions)
+    // console.log(positions)
         positions.forEach(function (position) {
             position.addEventListener('dragstart', handleDragStart);
             position.addEventListener('dragstart', handleDragStart);
@@ -85,27 +109,17 @@ function get_row() {
             position.addEventListener('drop', handleDrop);
         });
     
-    // let input_colors = JSON.stringify(picked_colors)
-    // fetch ('http://localhost:6969//get_input', {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //        input_colors
-    //     })
-    // })
-    check_row(picked_colors, new_id)
     };
 
+// for the button "suggest a random row"
 function generate_row() {
-    console.log('generating')
+    console.log('generating a random row')
     var blank_marbles = document.querySelectorAll("#blank .marble")
-    console.log(blank_marbles)
     const possible_colors = ["white","yellow","blue","green","brown","black","red","orange"]
     for (each_marble of blank_marbles) {
-        console.log(each_marble)
         picked = possible_colors[Math.floor(Math.random()*possible_colors.length)];
-        // console.log(picked)
-        console.log(each_marble.classList)
         each_marble.classList.add(picked)
+        each_marble.draggable = true
     }
 }
 

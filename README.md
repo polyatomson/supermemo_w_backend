@@ -1,3 +1,6 @@
 # supermemo
 
-js frontend + python backend
+### Example of a game:
+
+
+![Game example](game_example.png)
