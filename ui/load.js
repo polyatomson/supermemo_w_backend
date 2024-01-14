@@ -21,7 +21,8 @@ function restore_from_storage(e) {
         var restored_row = table.insertRow(i)
         i++
         restored_row.id = row_id
-        restored_row.innerHTML = `<td id='input1' class="positions">
+        restored_row.innerHTML = `<td class="duplicate align-middle"></td>
+        <td id='input1' class="positions">
     <span class="marble">1</span>
     </td>
     <td id='input2' class="positions">
@@ -55,6 +56,14 @@ function restore_from_storage(e) {
             var coloring_marble = marbles[each_index]
             coloring_marble.classList.add(restored_color)
         }
+        
+        // adding the duplicate button
+        duplicate_cell = restored_row.querySelectorAll(".duplicate")[0]
+        duplicate_cell.innerHTML = '<a data-bs-toggle="tooltip" data-bs-placement="left" title="Duplicate this row"><img src="assets/copy_icon.svg" width="25"></a>'
+        duplicate_cell.children[0].id = row_id+'_dupl'
+        duplicate_cell.children[0].addEventListener('click', duplicate_row)
+        new bootstrap.Tooltip(duplicate_cell.children[0])
+        
         // adding the row result
         var restored_result = row_results[row_id]
         display_row_results(row_id, restored_result)

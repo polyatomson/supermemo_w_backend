@@ -25,6 +25,14 @@ function get_row() {
     var row_lengths = table.rows.length
     var new_id = 'guess'+String(row_lengths)
     submitted_row.id = String(new_id)
+    
+    // adding the "duplicate" button for the submitted row
+    var duplicate_cell = submitted_row.querySelectorAll(".duplicate")[0];
+    duplicate_cell.innerHTML = '<a data-bs-toggle="tooltip" data-bs-placement="left" title="Duplicate this row"><img src="assets/copy_icon.svg" width="25"></a>';
+    duplicate_button = duplicate_cell.children[0];
+    duplicate_button.id = new_id+"_dupl"
+    new bootstrap.Tooltip(duplicate_button)
+    duplicate_button.addEventListener('click', duplicate_row)
 
     // adding the filled row records to the local storage
     var previous_guesses_str = localStorage.getItem('guesses')
@@ -33,7 +41,7 @@ function get_row() {
     localStorage.setItem('guesses', JSON.stringify(previous_guesses))
 
     // sending the row to the api for evaluation and displaying results
-    // let input_colors = JSON.stringify(picked_colors)
+    
     var evaluate_info = {"input_line": picked_colors, "combination": JSON.parse(localStorage.getItem("combination"))}
     fetch (API+'/check_line', {    
     method: 'POST',
@@ -69,7 +77,8 @@ function get_row() {
     // adding a new blank row at the bottom of the table
     var row = table.insertRow(-1)
     row.id = 'blank'
-    row.innerHTML = `<td id='input1' class="positions">
+    row.innerHTML = `<td class="duplicate align-middle"></td>
+    <td id='input1' class="positions">
     <span class="marble">1</span>
     </td>
     <td id='input2' class="positions">
@@ -118,8 +127,22 @@ function generate_row() {
     const possible_colors = ["white","yellow","blue","green","brown","black","red","orange"]
     for (each_marble of blank_marbles) {
         picked = possible_colors[Math.floor(Math.random()*possible_colors.length)];
+        each_marble.className = "marble"
         each_marble.classList.add(picked)
         each_marble.draggable = true
+    }
+}
+
+function duplicate_row(e) {
+    console.log('duplicating a row')
+    var blank_marbles = document.querySelectorAll("#blank .marble")
+    var source_row_id  = e.currentTarget.id
+    source_row_id = source_row_id.split('_')[0]
+    var source_marbles = JSON.parse(localStorage.getItem("guesses"))[source_row_id]
+    for (let index = 0; index < 5; index++) {
+        blank_marbles[index].className = "marble"
+        blank_marbles[index].classList.add(source_marbles[index])
+        blank_marbles[index].draggable = true
     }
 }
 
