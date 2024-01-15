@@ -28,7 +28,7 @@ function get_row() {
     
     // adding the "duplicate" button for the submitted row
     var duplicate_cell = submitted_row.querySelectorAll(".duplicate")[0];
-    duplicate_cell.innerHTML = '<a data-bs-toggle="tooltip" data-bs-placement="left" title="Duplicate this row"><img src="assets/copy_icon.svg" width="25"></a>';
+    duplicate_cell.innerHTML = '<a role="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Duplicate this row"><img src="assets/copy_icon.svg" width="25"></a>';
     duplicate_button = duplicate_cell.children[0];
     duplicate_button.id = new_id+"_dupl"
     new bootstrap.Tooltip(duplicate_button)
@@ -75,9 +75,9 @@ function get_row() {
         });
 
     // adding a new blank row at the bottom of the table
-    var row = table.insertRow(-1)
-    row.id = 'blank'
-    row.innerHTML = `<td class="duplicate align-middle"></td>
+    var new_row = table.insertRow(-1)
+    new_row.id = 'blank'
+    new_row.innerHTML = `<td class="duplicate align-middle"><span class="help" id="help_button" data-bs-toggle="tooltip" data-bs-placement="left" title="Get a hint">?</span></td>
     <td id='input1' class="positions">
     <span class="marble">1</span>
     </td>
@@ -105,6 +105,11 @@ function get_row() {
                         </div>
                     </td>`
     
+    // adding interaction for the help button
+    new_row_help = document.querySelectorAll("#blank td.duplicate .help")[0]
+    new_row_help.addEventListener('click', provide_color_hint)
+    new bootstrap.Tooltip(new_row_help)
+
     // adding listeners to the newly added blank row
     let positions = document.querySelectorAll('#blank td.positions')
     // console.log(positions)

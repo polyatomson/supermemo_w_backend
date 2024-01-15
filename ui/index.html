@@ -24,7 +24,9 @@
         <table class="table text-center" id="guesses">
             <tbody>
                 <tr id="blank">
-                    <td class="duplicate align-middle"></td>
+                    <td class="duplicate align-middle">
+                        <span class="help" id="help_button" data-bs-toggle="tooltip" data-bs-placement="left" title="Get a hint">?</span>
+                        </td>
                     <td id="input1" class="positions" >
                     <span class="marble">1</span>
                     </td>
@@ -54,6 +56,7 @@
                 </tr>
             </tbody>
         </table>
+        
         <div class="container text-center" id="marble_set">
             <div class="row mt-5">
             <div class="col colors">
@@ -83,6 +86,10 @@
         </div>
 
     </div>
+
+    <div id="hint_area">
+    </div>
+
     <div class="container text-center pt-3">
         <button class="btn btn-primary" type="submit" id="input_submit">Check row</button>
         <button class="btn btn-primary" type="reset" id="input_reset">Reset row</button>

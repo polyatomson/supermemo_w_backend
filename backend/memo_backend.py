@@ -5,7 +5,7 @@ from check_line import check_line
 # import flask
 import json
 # import random
-# from memo_analitics import Guess, Guesses
+from memo_analitics import create_a_hint
 # import os
 
 app = Flask(__name__)
@@ -23,11 +23,21 @@ def pass_comb():
 def get_color_line():
     data = request.get_json()
     print(type(data))
-    # data = json.loads(data)
     user_line = data["input_line"]
     combination = data["combination"]
     row_result = check_line(user_line, combination)
     return jsonify(row_result)
+
+@app.route('/hint', methods=['GET','POST'])
+def hint():
+    data = request.get_json()
+    guesses = data["guesses"]
+    print(guesses)
+    results = data["results"]
+    print(results)
+    if len(results) != 0:
+        hint_ready = create_a_hint(guesses, results)
+        return hint_ready
 
 @app.after_request
 def add_headers(response):

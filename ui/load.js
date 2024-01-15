@@ -1,7 +1,12 @@
 const API = 'http://localhost:7000'
 
 function restore_from_storage(e) {
-    // console.log('local storage', localStorage)
+    
+    // adding a listener for the help button
+    new_row_help = document.querySelectorAll("#blank td.duplicate .help")[0]
+    new_row_help.addEventListener('click', provide_color_hint)
+    new bootstrap.Tooltip(new_row_help)
+
     if (localStorage.length == 0) {
         console.log("creating a new combination")
         create_combination()
@@ -10,6 +15,7 @@ function restore_from_storage(e) {
 }
     else {
     console.log("restoring the game")
+
     // getting the saved row color sets
     var row_records = JSON.parse(localStorage.getItem("guesses"))
     var row_results = JSON.parse(localStorage.getItem("results"))
@@ -59,7 +65,7 @@ function restore_from_storage(e) {
         
         // adding the duplicate button
         duplicate_cell = restored_row.querySelectorAll(".duplicate")[0]
-        duplicate_cell.innerHTML = '<a data-bs-toggle="tooltip" data-bs-placement="left" title="Duplicate this row"><img src="assets/copy_icon.svg" width="25"></a>'
+        duplicate_cell.innerHTML = '<a role="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Duplicate this row"><img src="assets/copy_icon.svg" width="25"></a>'
         duplicate_cell.children[0].id = row_id+'_dupl'
         duplicate_cell.children[0].addEventListener('click', duplicate_row)
         new bootstrap.Tooltip(duplicate_cell.children[0])

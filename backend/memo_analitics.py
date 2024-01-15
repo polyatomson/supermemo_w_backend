@@ -38,6 +38,19 @@ class Guess:
 class Guesses:
     guesses: list[Guess]
     
+    @staticmethod
+    def load_guesses(guesses: dict[str, list[str]], results: dict[str, dict[str, int]]) -> 'Guesses':
+        # {'guess1': ['blue', 'black', 'blue', 'blue', 'yellow']}
+        # {'guess1': {'black': 0, 'white': 2}}
+        attempts = list()
+        for guess_id, color_list in guesses.items():
+            attempt = Guess(line=color_list, 
+                            black=results[guess_id]["black"], 
+                            white=results[guess_id]["white"])
+            attempts.append(attempt)
+        return Guesses(attempts)
+
+
     def checked_colors(self):
         checked = {}
         for g in self.guesses:
@@ -66,3 +79,22 @@ class Guesses:
         not_in_comb = [c for c, res in checked.items() if res == 0]
 
         return in_comb, not_in_comb, maybes
+
+def create_a_hint(guesses: dict[str, list[str]], results: dict[str, dict[str, int]]):
+    ready_guesses = Guesses.load_guesses(guesses, results)
+    in_comb, not_in_comb, maybes = ready_guesses.colors_reduce()
+    hint_ready = ""
+    if len(in_comb) != 5:
+        if in_comb != []:
+            hint_ready += "In the combination: " + ", ".join(in_comb) + "\n"
+        if not_in_comb != []:
+            hint_ready += "NOT in the combination: " + ", ".join(not_in_comb) + "\n"
+        if len(maybes) != 0:
+            maybe_hint = ""
+            for maybe in maybes.values():
+                maybe_hint += f"Exactly {str(maybe[1])} out of {', '.join(maybe[0])}\n"
+            hint_ready += maybe_hint
+    else:
+        hint_ready += "The correct color set is: " + ", ".join(in_comb)
+    
+    return hint_ready
