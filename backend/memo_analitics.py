@@ -86,13 +86,13 @@ def create_a_hint(guesses: dict[str, list[str]], results: dict[str, dict[str, in
     hint_ready = ""
     if len(in_comb) != 5:
         if in_comb != []:
-            hint_ready += "In the combination: " + ", ".join(in_comb) + "\n"
+            hint_ready += "In the combination: " + ", ".join(in_comb) + "</br>"
         if not_in_comb != []:
-            hint_ready += "NOT in the combination: " + ", ".join(not_in_comb) + "\n"
+            hint_ready += "NOT in the combination: " + ", ".join(not_in_comb) + "</br>"
         if len(maybes) != 0:
             maybe_hint = ""
             for maybe in maybes.values():
-                maybe_hint += f"Exactly {str(maybe[1])} out of {', '.join(maybe[0])}\n"
+                maybe_hint += f"Exactly {str(maybe[1])} out of {', '.join(maybe[0])}</br>"
             hint_ready += maybe_hint
     else:
         hint_ready += "The correct color set is: " + ", ".join(in_comb)
